@@ -1,0 +1,55 @@
+import { Product } from "@/src/lib/schemas/product.schema";
+
+export const mockProducts: Product[] = [
+    {
+        id: "550e8400-e29b-41d4-a716-446655440001",
+        slug: "maitriser-typescript-2024",
+        name: "Maîtriser TypeScript en 2024",
+        description:
+            "Guide complet pour apprendre TypeScript de zéro à expert. Inclut des exercices pratiques et des projets réels.",
+        price: 2999000,
+        currency: "XOF",
+        type: "ebook",
+        coverImage: "/products/typescript-ebook.jpg",
+        fileStorageKey: "ebooks/typescript-2024.pdf",
+        fileSize: 5242880,
+        fileMimeType: "application/pdf",
+        isPublished: true,
+        createdAt: new Date("2024-01-15"),
+        updatedAt: new Date("2024-01-15"),
+    },
+    {
+        id: "550e8400-e29b-41d4-a716-446655440002",
+        slug: "formation-nextjs-14-app-router",
+        name: "Formation Next.js 14 - App Router",
+        description:
+            "Formation vidéo complète sur Next.js 14 avec l'App Router. Apprenez à créer des applications web modernes et performantes.",
+        price: 7999000,
+        currency: "XOF",
+        type: "formation",
+        coverImage: "/products/nextjs-formation.jpg",
+        fileStorageKey: "formations/nextjs-14-complete.zip",
+        fileSize: 1073741824,
+        fileMimeType: "application/zip",
+        isPublished: true,
+        createdAt: new Date("2024-02-01"),
+        updatedAt: new Date("2024-02-01"),
+    },
+    {
+        id: "550e8400-e29b-41d4-a716-446655440003",
+        slug: "design-patterns-javascript",
+        name: "Design Patterns en JavaScript",
+        description:
+            "Découvrez les patterns de conception essentiels pour écrire du code JavaScript maintenable et scalable.",
+        price: 3499000,
+        currency: "XOF",
+        type: "ebook",
+        coverImage: "/products/design-patterns-ebook.jpg",
+        fileStorageKey: "ebooks/design-patterns-js.pdf",
+        fileSize: 3145728,
+        fileMimeType: "application/pdf",
+        isPublished: true,
+        createdAt: new Date("2024-01-20"),
+        updatedAt: new Date("2024-01-20"),
+    },
+];
