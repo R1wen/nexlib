@@ -5,13 +5,13 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "NexLib - Ebooks et Formations de Qualité",
   description: "Accédez à une bibliothèque d'ebooks et de formations de qualité pour développer vos compétences. Téléchargements sécurisés et accès instantané.",
-};
+}; 
 
 
 export default function HomePage() {
   return (
     <div className="flex flex-col gap-16 pb-16">
-      <section className="relative bg-gradient-to-br from-primary/10 via-background to-background">
+      <section className="relative bg-linear-to-br from-primary/10 via-background to-background">
         <div className="container mx-auto px-4 py-24 md:py-32">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
