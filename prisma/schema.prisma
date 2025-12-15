@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// Enums pour typage strict
+enum ProductType {
+  ebook
+  formation
+}
+
+enum AccessStatus {
+  ACTIVE
+  REVOKED
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+
+// 📦 PRODUITS
+model Product {
+  id             String      @id @default(uuid()) @db.VarChar(36)
+  slug           String      @unique @db.VarChar(191)
+  name           String
+  description    String      @db.Text
+  price          Int         
+  currency       String      @default("XOF")
+  type           ProductType
+  coverImage     String      @db.Text
+  fileStorageKey String      @db.Text
+  fileSize       Int?
+  fileMimeType   String?
+  isPublished    Boolean     @default(false)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  // Relations
+  accessRights  AccessRight[]
+  orderItems    OrderItem[]
+  downloadLinks DownloadLink[]
+
+  @@map("products")
+}
+
+
+model AccessRight {
+  id                      String       @id @default(uuid()) @db.VarChar(36)
+  clerkUserId             String       @db.VarChar(191)
+  productId               String       @db.VarChar(36)
+  stripeCheckoutSessionId String       @db.VarChar(191)
+  amountPaid              Int          // Prix payé à l'achat
+  currency                String       @default("XOF")
+  status                  AccessStatus @default(ACTIVE)
+  purchaseDate            DateTime     @default(now())
+  expiresAt               DateTime?    // Null = à vie
+  lastDownloadedAt        DateTime?
+  downloadCount           Int          @default(0)
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([clerkUserId, productId]) // 191 + 36 = 227 chars -> < 1000 bytes OK
+  @@index([clerkUserId])
+  @@map("access_rights")
+}
+
+
+model OrderHistory {
+  id                      String      @id @default(uuid()) @db.VarChar(36)
+  clerkUserId             String      @db.VarChar(191)
+  stripeCheckoutSessionId String      @unique @db.VarChar(191)
+  stripePaymentIntentId   String?     @db.VarChar(191)
+  totalAmount             Int
+  currency                String      @default("XOF")
+  status                  OrderStatus @default(PENDING)
+  createdAt               DateTime    @default(now())
+  updatedAt               DateTime    @updatedAt
+
+  // Relations
+  items OrderItem[]
+
+  @@index([clerkUserId])
+  @@map("orders")
+}
+
+
+model OrderItem {
+  id          String @id @default(uuid()) @db.VarChar(36)
+  orderId     String @db.VarChar(36)
+  productId   String @db.VarChar(36)
+  productName String // Snapshot du nom
+  pricePaid   Int    // Snapshot du prix
+  currency    String @default("XOF")
+
+  // Relations
+  order   OrderHistory @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product      @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_items")
+}
+
+
+model DownloadLink {
+  id          String    @id @default(uuid()) @db.VarChar(36)
+  clerkUserId String    @db.VarChar(191)
+  productId   String    @db.VarChar(36)
+  token       String    @unique @db.VarChar(191)
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+  usedAt      DateTime?
+  ipAddress   String?   @db.VarChar(45) // IPv6 max length
+  userAgent   String?   @db.Text
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([clerkUserId])
+  @@map("download_links")
+}
