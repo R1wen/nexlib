@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/src/components/layout/Header";
 import { Footer } from "@/src/components/layout/Footer";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
     default: "NexLib - Plateforme de Produits Numériques",
     template: "%s | NexLib",
   },
-  description: "Plateforme sécurisée de vente d'ebooks et de formations. Accès instantané après paiement avec téléchargements protégés.",
+  description:
+    "Plateforme sécurisée de vente d'ebooks et de formations. Accès instantané après paiement avec téléchargements protégés.",
 };
 
 export default function RootLayout({
@@ -28,14 +30,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
-      >
-        <Header />
-        <main className="grow">{children}</main>
-        <Footer />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="fr">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
+        >
+          <Header />
+          <main className="grow">{children}</main>
+          <Footer />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

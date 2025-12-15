@@ -45,7 +45,7 @@ model Product {
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 
-  // Relations
+  
   accessRights  AccessRight[]
   orderItems    OrderItem[]
   downloadLinks DownloadLink[]
@@ -59,18 +59,18 @@ model AccessRight {
   clerkUserId             String       @db.VarChar(191)
   productId               String       @db.VarChar(36)
   stripeCheckoutSessionId String       @db.VarChar(191)
-  amountPaid              Int          // Prix payé à l'achat
+  amountPaid              Int          
   currency                String       @default("XOF")
   status                  AccessStatus @default(ACTIVE)
   purchaseDate            DateTime     @default(now())
-  expiresAt               DateTime?    // Null = à vie
+  expiresAt               DateTime?    
   lastDownloadedAt        DateTime?
   downloadCount           Int          @default(0)
 
-  // Relations
+  
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  @@unique([clerkUserId, productId]) // 191 + 36 = 227 chars -> < 1000 bytes OK
+  @@unique([clerkUserId, productId])
   @@index([clerkUserId])
   @@map("access_rights")
 }
@@ -87,7 +87,7 @@ model OrderHistory {
   createdAt               DateTime    @default(now())
   updatedAt               DateTime    @updatedAt
 
-  // Relations
+  
   items OrderItem[]
 
   @@index([clerkUserId])
@@ -99,11 +99,11 @@ model OrderItem {
   id          String @id @default(uuid()) @db.VarChar(36)
   orderId     String @db.VarChar(36)
   productId   String @db.VarChar(36)
-  productName String // Snapshot du nom
-  pricePaid   Int    // Snapshot du prix
+  productName String 
+  pricePaid   Int    
   currency    String @default("XOF")
 
-  // Relations
+  
   order   OrderHistory @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product Product      @relation(fields: [productId], references: [id], onDelete: Restrict)
 
@@ -121,10 +121,10 @@ model DownloadLink {
   expiresAt   DateTime
   createdAt   DateTime  @default(now())
   usedAt      DateTime?
-  ipAddress   String?   @db.VarChar(45) // IPv6 max length
+  ipAddress   String?   @db.VarChar(45) 
   userAgent   String?   @db.Text
 
-  // Relations
+  
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([token])

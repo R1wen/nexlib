@@ -1,5 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/src/components/ui/button";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -31,12 +38,24 @@ export function Header() {
               </Link>
             );
           })}
-          <Link href="/connexion">
-            <Button variant="default" size="sm">
-              Connexion / Inscription
-            </Button>
-          </Link>
         </nav>
+        <div className="flex gap-3">
+          <SignedOut>
+            <SignInButton>
+              <Button variant="default" size="sm">
+                Sign In
+              </Button>
+            </SignInButton>
+            <SignUpButton>
+              <Button variant="secondary" size="sm">
+                Sign Up
+              </Button>
+            </SignUpButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </div>
       </div>
     </header>
   );
