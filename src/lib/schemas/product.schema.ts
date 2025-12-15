@@ -6,7 +6,7 @@ export const ProductSchema = z.object({
     name: z.string().min(1, "Le nom est requis").max(200),
     description: z.string().min(10, "La description doit contenir au moins 10 caractères"),
     price: z.number().int().positive("Le prix doit être positif"),
-    currency: z.literal("XOF"),  //explain
+    currency: z.literal("XOF"),
     type: z.enum(["ebook", "formation"]),
     coverImage: z.string().url("L'URL de l'image doit être valide"),
     fileStorageKey: z.string().min(1, "La clé de stockage du fichier est requise"),
