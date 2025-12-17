@@ -1,6 +1,6 @@
 import { mockProducts } from "@/src/lib/mock-data";
 import { notFound } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 
 export default async function ProductDetailPage({
   params,
@@ -14,14 +14,19 @@ export default async function ProductDetailPage({
   {
     /*Petit test pour recuperer les infos User*/
   }
-  // const { userId } = auth();
-  // if (!userId) {
-  //   throw new Error("Utilisateur non connecté");
-  // }
+  const { userId } = await auth();
+  const user = await currentUser();
+  console.log("======== DEBUT DES INFOS ========")
+  console.log(user)
 
   return (
     <div>
       {product.name}
+      <ol>
+        <li>{userId}</li>
+        <li>{user?.firstName} {user?.lastName}</li>
+        <li>{user?.emailAddresses[0].emailAddress}</li>
+      </ol>
     </div>
   );
 }
