@@ -39,7 +39,7 @@ export function Header() {
             );
           })}
         </nav>
-        <div className="flex gap-3">
+        <div className="flex gap-3 m-5">
           <SignedOut>
             <SignInButton>
               <Button variant="default" size="sm">

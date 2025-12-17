@@ -3,6 +3,7 @@ import { Product, ProductTypeLabels } from "@/src/lib/schemas/product.schema";
 import { formatPrice } from "@/src/lib/format";
 import { Badge } from "@/src/components/ui/Badge";
 import { Button } from "@/src/components/ui/button";
+import Link from "next/link";
 
 interface CardProductProps {
   product: Product;
@@ -19,7 +20,9 @@ export function CardProduct({ product }: CardProductProps) {
           className="object-cover transition-transform duration-300 group-hover:scale-105"
         />
         <div className="absolute top-3 right-3">
-          <Badge variant={product.type}>{ProductTypeLabels[product.type]}</Badge>
+          <Badge variant={product.type}>
+            {ProductTypeLabels[product.type]}
+          </Badge>
         </div>
       </div>
 
@@ -32,8 +35,12 @@ export function CardProduct({ product }: CardProductProps) {
         </div>
 
         <div className="flex items-center justify-between pt-2">
-          <span className="text-2xl font-bold">{formatPrice(product.price)}</span>
-          <Button>Voir détails</Button>
+          <span className="text-2xl font-bold">
+            {formatPrice(product.price)}
+          </span>
+          <Link href={`/products/${product.slug}`}>
+            <Button>Voir détails</Button>
+          </Link>
         </div>
       </div>
     </article>
