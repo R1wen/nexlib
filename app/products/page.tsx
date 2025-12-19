@@ -8,9 +8,11 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductsPage() {
-  const products = await prisma.product.findMany({ where: { isPublished: true } });
+  const products = await prisma.product.findMany({
+    where: { isPublished: true },
+    orderBy: { createdAt: "desc" },
+  });
 
-  
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center space-y-4 mb-12">

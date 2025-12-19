@@ -76,8 +76,8 @@ export default async function ProductDetailPage({
             Debug Connexion
           </h3>
           <p className="text-sm">
-            Connecté en tant que : {user?.emailAddresses[0].emailAddress} (ID:{" "}
-            {userId})
+            Connecté en tant que : {user?.firstName} {user?.lastName} (Email:{" "}
+            {user?.emailAddresses[0].emailAddress})
           </p>
         </div>
       )}
