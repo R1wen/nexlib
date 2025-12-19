@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { Product, ProductTypeLabels } from "@/src/lib/schemas/product.schema";
+import { ProductTypeLabels } from "@/src/lib/schemas/product.schema";
+import { Product } from "@/app/generated/prisma/client";
 import { formatPrice } from "@/src/lib/format";
 import { Badge } from "@/src/components/ui/Badge";
 import { Button } from "@/src/components/ui/button";
@@ -12,7 +13,7 @@ interface CardProductProps {
 export function CardProduct({ product }: CardProductProps) {
   return (
     <article className="group relative overflow-hidden rounded-xl border bg-card transition-all hover:shadow-lg">
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+      <div className="relative aspect-4/3 overflow-hidden bg-muted">
         <Image
           src={product.coverImage}
           alt={product.name}

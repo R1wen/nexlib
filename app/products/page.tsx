@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { CardProduct } from "@/src/components/products/CardProduct";
 import prisma from "@/src/lib/prisma";
 
+
 export const metadata: Metadata = {
   title: "Nos Produits",
   description: "Découvrez notre sélection d'ebooks et de formations",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
 export default async function ProductsPage() {
   const products = await prisma.product.findMany({
     where: { isPublished: true },
-    orderBy: { createdAt: "desc" },
+    orderBy: { createdAt: "desc" }
   });
 
   return (
