@@ -9,7 +9,7 @@ import { Label } from "@/src/components/ui/label";
 import { Switch } from "@/src/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/src/components/ui/select";
 import { createProduct, updateProduct } from "@/src/lib/actions/products";
-import { Product } from "@prisma/client";
+import { Product } from "@/app/generated/prisma/client";
 
 interface ProductFormProps {
     product?: Product;
