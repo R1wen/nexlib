@@ -29,6 +29,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  console.log(`This website is made by OKE K. Erwin, here is my github: https://github.com/R1wen`)
   return (
     <ClerkProvider>
       <html lang="fr">

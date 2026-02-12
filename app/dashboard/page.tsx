@@ -12,7 +12,6 @@ export default async function DashboardPage() {
     redirect("/sign-in");
   }
 
-  // 2. Récupération des produits achetés via la table AccessRight
   const userAccess = await prisma.accessRight.findMany({
     where: {
       clerkUserId: userId,
@@ -32,6 +31,9 @@ export default async function DashboardPage() {
           Retrouvez ici tous vos ebooks et formations.
         </p>
       </div>
+      <a href="/dashboard/seller">
+        <Button>Dashboard seller</Button>
+      </a>
 
       {myProducts.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-20 text-center">

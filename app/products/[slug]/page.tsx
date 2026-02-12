@@ -18,9 +18,7 @@ export default async function ProductDetailPage({
   });
   if (!product) notFound();
 
-  {
-    /*Petit test pour recuperer les infos User*/
-  }
+
   const { userId } = await auth();
   const user = await currentUser();
 
@@ -35,7 +33,6 @@ export default async function ProductDetailPage({
             className="object-cover w-full h-full"
           />
           <div className="absolute top-4 right-4">
-            {/* Note: product.type est maintenant un Enum Prisma (EBOOK / FORMATION) */}
             <Badge className="text-sm px-3 py-1">{product.type}</Badge>
           </div>
         </div>
