@@ -58,12 +58,11 @@ export async function getPresignedUploadUrl(values: UploadRequest) {
     Bucket: R2_BUCKET_NAME,
     Key: fileKey,
     ContentType: fileType,
-    ContentLength: fileSize,
     // Metadonnées personnalisées utiles pour le suivi
-    Metadata: {
-      userId: userId,
-      originalName: fileName,
-    },
+    // Metadata: {
+    //   userId: userId,
+    //   originalName: fileName,
+    // },
   });
 
   try {
