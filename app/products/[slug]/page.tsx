@@ -1,8 +1,10 @@
 import { notFound } from "next/navigation";
-import prisma from "@/src/lib/prisma";
-import { auth, currentUser } from "@clerk/nextjs/server";
-import { Badge } from "@/src/components/ui/Badge";
-import { Button } from "@/src/components/ui/button";
+import prisma from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/button";
+import { createCheckoutSession } from "@/lib/actions/checkout";
+import { generateDownloadLink } from "@/lib/actions/download";
 
 export default async function ProductDetailPage({
   params,
@@ -11,16 +13,22 @@ export default async function ProductDetailPage({
 }) {
   const { slug } = await params;
   const product = await prisma.product.findUnique({
-    where: {
-      slug: slug,
-      isPublished: true,
-    },
+    where: { slug, isPublished: true },
   });
   if (!product) notFound();
 
-
   const { userId } = await auth();
-  const user = await currentUser();
+
+  // Vérifier si l'utilisateur a déjà acheté ce produit
+  const accessRight = userId
+    ? await prisma.accessRight.findUnique({
+        where: {
+          clerkUserId_productId: { clerkUserId: userId, productId: product.id },
+        },
+      })
+    : null;
+
+  const alreadyPurchased = accessRight?.status === "ACTIVE";
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -56,28 +64,28 @@ export default async function ProductDetailPage({
           </p>
 
           <div className="pt-4">
-            <Button
-              size="lg"
-              className="w-full md:w-auto px-12 py-6 text-lg rounded-full shadow-lg"
-            >
-              Acheter maintenant
-            </Button>
+            {alreadyPurchased ? (
+              <form action={generateDownloadLink.bind(null, product.id)}>
+                <Button
+                  size="lg"
+                  className="w-full md:w-auto px-12 py-6 text-lg rounded-full shadow-lg"
+                >
+                  Télécharger
+                </Button>
+              </form>
+            ) : (
+              <form action={createCheckoutSession.bind(null, product.id)}>
+                <Button
+                  size="lg"
+                  className="w-full md:w-auto px-12 py-6 text-lg rounded-full shadow-lg"
+                >
+                  Acheter maintenant
+                </Button>
+              </form>
+            )}
           </div>
         </div>
       </div>
-
-      {/* Debug Clerk */}
-      {userId && (
-        <div className="mt-20 p-6 rounded-xl border border-dashed bg-zinc-50 dark:bg-zinc-900/50">
-          <h3 className="text-sm font-medium mb-3 text-zinc-500 uppercase tracking-wider">
-            Debug Connexion
-          </h3>
-          <p className="text-sm">
-            Connecté en tant que : {user?.firstName} {user?.lastName} (Email:{" "}
-            {user?.emailAddresses[0].emailAddress})
-          </p>
-        </div>
-      )}
     </div>
   );
 }

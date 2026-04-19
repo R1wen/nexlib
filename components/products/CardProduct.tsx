@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { ProductTypeLabels } from "@/src/lib/schemas/product.schema";
+import { ProductTypeLabels } from "@/lib/schemas/product.schema";
 import { Product } from "@/app/generated/prisma/client";
-import { formatPrice } from "@/src/lib/format";
-import { Badge } from "@/src/components/ui/Badge";
-import { Button } from "@/src/components/ui/button";
+import { formatPrice } from "@/lib/format";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 interface CardProductProps {

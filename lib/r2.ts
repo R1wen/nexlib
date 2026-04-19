@@ -13,7 +13,6 @@ export const r2 = new S3Client({
   },
   requestChecksumCalculation: "WHEN_REQUIRED",
   responseChecksumValidation: "WHEN_REQUIRED",
-  forcePathStyle: true,
 });
 
 export const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME || "nexlib-bucket";

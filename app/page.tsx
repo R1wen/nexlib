@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Button } from "@/src/components/ui/button";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export const metadata: Metadata = {

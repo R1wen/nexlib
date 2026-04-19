@@ -1,8 +1,8 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import prisma from "@/src/lib/prisma";
-import { Button } from "@/src/components/ui/button";
+import prisma from "@/lib/prisma";
+import { Button } from "@/components/ui/button";
 import {
     Table,
     TableBody,
@@ -10,7 +10,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/src/components/ui/table";
+} from "@/components/ui/table";
 import { Plus, MoreHorizontal, Pencil, Trash } from "lucide-react";
 import {
     DropdownMenu,
@@ -19,8 +19,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/src/components/ui/dropdown-menu";
-import { deleteProduct } from "@/src/lib/actions/products";
+} from "@/components/ui/dropdown-menu";
+import { deleteProduct } from "@/lib/actions/products";
 
 export default async function SellerDashboardPage() {
     const { userId } = await auth();
@@ -35,6 +35,11 @@ export default async function SellerDashboardPage() {
         },
         orderBy: {
             createdAt: "desc",
+        },
+        include: {
+            _count: {
+                select: { accessRights: true },
+            },
         },
     });
 
@@ -98,7 +103,7 @@ export default async function SellerDashboardPage() {
                                             </span>
                                         )}
                                     </TableCell>
-                                    <TableCell>0</TableCell> {/* Placeholder pour le nombre de ventes */}
+                                    <TableCell>{product._count.accessRights}</TableCell>
                                     <TableCell className="text-right">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>

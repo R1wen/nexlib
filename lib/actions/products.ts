@@ -4,8 +4,10 @@ import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import prisma from "@/src/lib/prisma";
-import { ProductSchema } from "@/src/lib/schemas/product.schema";
+import prisma from "@/lib/prisma";
+import { ProductSchema } from "@/lib/schemas/product.schema";
+import { r2, R2_BUCKET_NAME } from "@/lib/r2";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 const CreateProductSchema = ProductSchema.pick({
   name: true,
@@ -128,11 +130,26 @@ export async function deleteProduct(id: string) {
   // Vérification propriété
   const existingProduct = await prisma.product.findUnique({
     where: { id },
-    select: { sellerId: true },
+    select: { sellerId: true, fileStorageKey: true, coverImage: true },
   });
 
   if (!existingProduct || existingProduct.sellerId !== userId) {
     return { error: "Interdit de supprimer ce produit." };
+  }
+
+  // Supprimer les fichiers R2 (best-effort)
+  try {
+    await r2.send(
+      new DeleteObjectCommand({ Bucket: R2_BUCKET_NAME, Key: existingProduct.fileStorageKey })
+    );
+    // Extraire la clé R2 depuis l'URL de la cover
+    const coverUrl = new URL(existingProduct.coverImage);
+    const coverKey = coverUrl.pathname.slice(1); // retire le "/" initial
+    await r2.send(
+      new DeleteObjectCommand({ Bucket: R2_BUCKET_NAME, Key: coverKey })
+    );
+  } catch (r2Error) {
+    console.error("Erreur suppression R2 (ignorée):", r2Error);
   }
 
   try {

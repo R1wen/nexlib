@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { CardProduct } from "@/src/components/products/CardProduct";
-import prisma from "@/src/lib/prisma";
+import { CardProduct } from "@/components/products/CardProduct";
+import prisma from "@/lib/prisma";
 
 
 export const metadata: Metadata = {

@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { notFound, redirect } from "next/navigation";
-import prisma from "@/src/lib/prisma";
+import prisma from "@/lib/prisma";
 import { ProductForm } from "../_components/ProductForm";
 
 interface PageProps {

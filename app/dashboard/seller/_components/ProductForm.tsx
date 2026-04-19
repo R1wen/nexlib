@@ -3,20 +3,19 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Product } from "@/app/generated/prisma/client"; // Ton type Prisma généré
-import { Button } from "@/src/components/ui/button";
-import { Input } from "@/src/components/ui/input";
-import { Textarea } from "@/src/components/ui/textarea";
-import { Label } from "@/src/components/ui/label";
-import { Switch } from "@/src/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/src/components/ui/select";
-import { createProduct, updateProduct } from "@/src/lib/actions/products";
-import { getPresignedUploadUrl } from "@/src/lib/actions/upload";
+} from "@/components/ui/select";
+import { createProduct, updateProduct } from "@/lib/actions/products";
 
 interface ProductFormProps {
   product?: Product;
@@ -34,32 +33,18 @@ export function ProductForm({ product }: ProductFormProps) {
   const [selectedProductFile, setSelectedProductFile] = useState<File | null>(null);
   const [selectedCoverFile, setSelectedCoverFile] = useState<File | null>(null);
 
-  /**
-   * Helper pour uploader un fichier unique vers R2
-   */
   async function uploadToR2(file: File, destination: "products" | "covers"): Promise<string> {
-    // 1. Demander l'autorisation au serveur (Server Action)
-    const { signedUrl, fileKey } = await getPresignedUploadUrl({
-      fileName: file.name,
-      fileType: file.type,
-      fileSize: file.size,
-      destination,
-    });
+    const form = new FormData();
+    form.append("file", file);
+    form.append("destination", destination);
 
-    // 2. Envoyer le fichier directement au cloud (R2)
-    const uploadResponse = await fetch(signedUrl, {
-      method: "PUT",
-      body: file,
-      headers: {
-        "Content-Type": file.type,
-      },
-    });
-
-    if (!uploadResponse.ok) {
-      throw new Error(`Échec de l'upload vers ${destination}`);
+    const res = await fetch("/api/upload", { method: "POST", body: form });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || `Échec de l'upload vers ${destination}`);
     }
-
-    return fileKey; // On retourne la clé (chemin) pour la base de données
+    const { fileKey } = await res.json();
+    return fileKey;
   }
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
