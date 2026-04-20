@@ -28,7 +28,7 @@ export default async function DashboardPage() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-10">
+    <div className="max-w-5xl mx-auto px-6 py-12">
       <div className="flex flex-col gap-2 mb-8">
         <h1 className="text-3xl font-bold tracking-tight">Mes Achats</h1>
         <p className="text-muted-foreground">

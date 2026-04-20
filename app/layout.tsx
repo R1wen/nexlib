@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/layout/AppSidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,17 +30,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  console.log(`This website is made by OKE K. Erwin, here is my github: https://github.com/R1wen`)
   return (
     <ClerkProvider>
       <html lang="fr">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Header />
-          <main className="grow">{children}</main>
-          <Footer />
+          <SidebarProvider>
+            <AppSidebar />
+            <div className="flex flex-col flex-1 min-h-screen">
+              <div className="flex items-center h-12 px-4 border-b border-slate-800 md:hidden">
+                <SidebarTrigger />
+              </div>
+              <main className="flex-1 overflow-auto">
+                {children}
+              </main>
+            </div>
+          </SidebarProvider>
           <Toaster richColors position="top-right" />
         </body>
       </html>
