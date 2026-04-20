@@ -55,7 +55,7 @@ export default async function ProductDetailPage({
               {new Intl.NumberFormat("fr-FR", {
                 style: "currency",
                 currency: product.currency,
-              }).format(product.price / 100)}
+              }).format(product.price)}
             </p>
           </div>
 

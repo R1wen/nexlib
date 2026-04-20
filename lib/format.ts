@@ -1,9 +1,8 @@
-export function formatPrice(priceInCents: number): string {
-    const fcfa = priceInCents / 100;
+export function formatPrice(price: number): string {
     return new Intl.NumberFormat("fr-FR", {
         style: "currency",
         currency: "XOF",
-    }).format(fcfa);
+    }).format(price);
 }
 
 export function formatDate(date: Date): string {

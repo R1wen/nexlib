@@ -29,9 +29,8 @@ export async function createCheckoutSession(productId: string) {
     redirect("/dashboard");
   }
 
-  // XOF est une devise zéro-décimal dans Stripe : on envoie le montant en unité entière
-  // La DB stocke le prix * 100, donc on divise par 100 pour Stripe
-  const stripeAmount = Math.round(product.price / 100);
+  // XOF est une devise zéro-décimal dans Stripe : on envoie directement le montant XOF
+  const stripeAmount = product.price;
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",

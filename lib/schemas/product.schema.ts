@@ -5,7 +5,7 @@ export const ProductSchema = z.object({
     slug: z.string().min(1, "Le slug est requis").regex(/^[a-z0-9-]+$/, "Le slug doit contenir uniquement des lettres minuscules, chiffres et tirets"),
     name: z.string().min(1, "Le nom est requis").max(200),
     description: z.string().min(10, "La description doit contenir au moins 10 caractères"),
-    price: z.number().int().positive("Le prix doit être positif"),
+    price: z.number().int().min(100, "Le prix minimum est 100 XOF"),
     currency: z.literal("XOF"),
     type: z.enum(["ebook", "formation"]),
     coverImage: z.string().url("L'URL de l'image doit être valide"),
