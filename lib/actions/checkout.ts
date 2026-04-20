@@ -44,7 +44,7 @@ export async function createCheckoutSession(productId: string) {
           product_data: {
             name: product.name,
             description: product.description.slice(0, 255),
-            images: [product.coverImage],
+            images: [],
           },
         },
         quantity: 1,

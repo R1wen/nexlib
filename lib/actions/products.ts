@@ -16,8 +16,9 @@ const CreateProductSchema = ProductSchema.pick({
   type: true,
   coverImage: true,
   fileStorageKey: true,
-  fileSize: true,      // Optionnel
-  fileMimeType: true,  // Optionnel
+  fileSize: true,
+  fileMimeType: true,
+  isPublished: true,
 });
 
 const UpdateProductSchema = CreateProductSchema.partial();
@@ -42,7 +43,7 @@ export async function createProduct(data: CreateProductInput) {
     };
   }
 
-  const { name, description, price, type, coverImage, fileStorageKey, fileSize, fileMimeType } = result.data;
+  const { name, description, price, type, coverImage, fileStorageKey, fileSize, fileMimeType, isPublished } = result.data;
 
   const slug = name
     .toLowerCase()
@@ -64,7 +65,7 @@ export async function createProduct(data: CreateProductInput) {
         fileMimeType: fileMimeType ?? "application/octet-stream",
         slug,
         sellerId: userId,
-        isPublished: false, // Brouillon par défaut
+        isPublished: isPublished ?? false,
       },
     });
   } catch (error) {
@@ -117,6 +118,37 @@ export async function updateProduct(id: string, data: UpdateProductInput) {
   revalidatePath("/dashboard/seller");
   revalidatePath(`/dashboard/seller/${id}`);
   redirect("/dashboard/seller");
+}
+
+
+export async function togglePublish(id: string, currentState: boolean) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return { error: "Non autorisé" };
+  }
+
+  const existingProduct = await prisma.product.findUnique({
+    where: { id },
+    select: { sellerId: true },
+  });
+
+  if (!existingProduct || existingProduct.sellerId !== userId) {
+    return { error: "Non autorisé ou produit introuvable." };
+  }
+
+  try {
+    await prisma.product.update({
+      where: { id },
+      data: { isPublished: !currentState },
+    });
+  } catch (error) {
+    console.error("Erreur TogglePublish:", error);
+    return { error: "Erreur lors du changement de statut." };
+  }
+
+  revalidatePath("/dashboard/seller");
+  return { success: true };
 }
 
 

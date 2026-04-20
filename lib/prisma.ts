@@ -2,7 +2,7 @@ import { Pool } from 'pg'
 import { PrismaPg } from '@prisma/adapter-pg'
 import { PrismaClient } from '@/app/generated/prisma/client'
 
-const connectionString = process.env.DATABASE_URL
+const connectionString = process.env.DIRECT_URL
 
 // 1. On configure le Pool Postgres (nécessaire pour l'adapter)
 const pool = new Pool({ connectionString })

@@ -11,16 +11,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Plus, MoreHorizontal, Pencil, Trash } from "lucide-react";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { deleteProduct } from "@/lib/actions/products";
+import { Plus, Pencil, Trash2, Eye, EyeOff } from "lucide-react";
+import { deleteProduct, togglePublish } from "@/lib/actions/products";
 
 export default async function SellerDashboardPage() {
     const { userId } = await auth();
@@ -30,16 +22,10 @@ export default async function SellerDashboardPage() {
     }
 
     const products = await prisma.product.findMany({
-        where: {
-            sellerId: userId,
-        },
-        orderBy: {
-            createdAt: "desc",
-        },
+        where: { sellerId: userId },
+        orderBy: { createdAt: "desc" },
         include: {
-            _count: {
-                select: { accessRights: true },
-            },
+            _count: { select: { accessRights: true } },
         },
     });
 
@@ -84,13 +70,15 @@ export default async function SellerDashboardPage() {
                                 <TableRow key={product.id}>
                                     <TableCell className="font-medium">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-10 h-10 bg-muted rounded overflow-hidden">
+                                            <div className="w-10 h-10 bg-muted rounded overflow-hidden shrink-0">
                                                 <img src={product.coverImage} alt="" className="w-full h-full object-cover" />
                                             </div>
-                                            <span>{product.name}</span>
+                                            <span className="line-clamp-1">{product.name}</span>
                                         </div>
                                     </TableCell>
-                                    <TableCell>{(product.price).toLocaleString()} {product.currency}</TableCell>
+                                    <TableCell className="whitespace-nowrap">
+                                        {product.price.toLocaleString()} {product.currency}
+                                    </TableCell>
                                     <TableCell className="capitalize">{product.type}</TableCell>
                                     <TableCell>
                                         {product.isPublished ? (
@@ -104,39 +92,55 @@ export default async function SellerDashboardPage() {
                                         )}
                                     </TableCell>
                                     <TableCell>{product._count.accessRights}</TableCell>
-                                    <TableCell className="text-right">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <Button variant="ghost" className="h-8 w-8 p-0">
-                                                    <span className="sr-only">Open menu</span>
-                                                    <MoreHorizontal className="h-4 w-4" />
-                                                </Button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
-                                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                <DropdownMenuItem asChild>
-                                                    <Link href={`/dashboard/seller/${product.id}`}>
-                                                        <Pencil className="mr-2 h-4 w-4" /> Modifier
-                                                    </Link>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem asChild>
-                                                    <Link href={`/products/${product.slug}`} target="_blank">
-                                                        Voir la page
-                                                    </Link>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuSeparator />
-                                                <form
-                                                    action={async () => {
-                                                        "use server";
-                                                        await deleteProduct(product.id);
-                                                    }}
+                                    <TableCell>
+                                        <div className="flex items-center justify-end gap-1">
+                                            {/* Modifier */}
+                                            <Button asChild variant="ghost" size="sm" className="h-8 px-2">
+                                                <Link href={`/dashboard/seller/${product.id}`}>
+                                                    <Pencil className="h-4 w-4 mr-1" />
+                                                    Modifier
+                                                </Link>
+                                            </Button>
+
+                                            {/* Publier / Dépublier */}
+                                            <form
+                                                action={async () => {
+                                                    "use server";
+                                                    await togglePublish(product.id, product.isPublished);
+                                                }}
+                                            >
+                                                <Button
+                                                    type="submit"
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className={`h-8 px-2 ${product.isPublished ? "text-yellow-700 hover:text-yellow-800 hover:bg-yellow-50" : "text-green-700 hover:text-green-800 hover:bg-green-50"}`}
                                                 >
-                                                    <button type="submit" className="w-full flex items-center px-2 py-1.5 text-sm text-red-600 hover:bg-red-50 rounded-sm">
-                                                        <Trash className="mr-2 h-4 w-4" /> Supprimer
-                                                    </button>
-                                                </form>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                                    {product.isPublished ? (
+                                                        <><EyeOff className="h-4 w-4 mr-1" /> Dépublier</>
+                                                    ) : (
+                                                        <><Eye className="h-4 w-4 mr-1" /> Publier</>
+                                                    )}
+                                                </Button>
+                                            </form>
+
+                                            {/* Supprimer */}
+                                            <form
+                                                action={async () => {
+                                                    "use server";
+                                                    await deleteProduct(product.id);
+                                                }}
+                                            >
+                                                <Button
+                                                    type="submit"
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className="h-8 px-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                                >
+                                                    <Trash2 className="h-4 w-4 mr-1" />
+                                                    Supprimer
+                                                </Button>
+                                            </form>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))
