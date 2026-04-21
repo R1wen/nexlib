@@ -1,4 +1,4 @@
-import { currentUser } from "@clerk/nextjs/server"
+import { currentUser, auth } from "@clerk/nextjs/server"
 import { UserButton } from "@clerk/nextjs"
 import {
   Sidebar,
@@ -12,10 +12,9 @@ import {
 } from "@/components/ui/sidebar"
 import { NavItems } from "@/components/layout/NavItems"
 
-const placeholderSections = ["People", "Business", "Settings"]
-
 export async function AppSidebar() {
-  const user = await currentUser()
+  const [user, { sessionClaims }] = await Promise.all([currentUser(), auth()])
+  const isAdmin = (sessionClaims?.metadata as { role?: string } | undefined)?.role === "admin"
 
   return (
     <Sidebar className="border-r border-gray-200 bg-white">
@@ -32,23 +31,10 @@ export async function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <NavItems />
+              <NavItems isAdmin={isAdmin} />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
-        {placeholderSections.map((section) => (
-          <SidebarGroup key={section} className="mt-4">
-            <SidebarGroupLabel className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3 mb-1">
-              {section}
-            </SidebarGroupLabel>
-            <SidebarGroupContent>
-              <p className="px-3 text-xs text-gray-300 italic">
-                Bientot disponible
-              </p>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
       </SidebarContent>
 
       <SidebarFooter className="px-4 py-4 border-t border-gray-200">
