@@ -14,7 +14,8 @@ import { NavItems } from "@/components/layout/NavItems"
 
 export async function AppSidebar() {
   const [user, { sessionClaims }] = await Promise.all([currentUser(), auth()])
-  const isAdmin = (sessionClaims?.metadata as { role?: string } | undefined)?.role === "admin"
+  const metadata = (sessionClaims?.metadata ?? sessionClaims?.publicMetadata) as { role?: string } | undefined
+  const isAdmin = metadata?.role === "admin"
 
   return (
     <Sidebar className="border-r border-gray-200 bg-white">

@@ -9,7 +9,7 @@ import { generateDownloadLink } from "@/lib/actions/download";
 export default async function ProductDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
   const product = await prisma.product.findUnique({
@@ -19,7 +19,6 @@ export default async function ProductDetailPage({
 
   const { userId } = await auth();
 
-  // Vérifier si l'utilisateur a déjà acheté ce produit
   const accessRight = userId
     ? await prisma.accessRight.findUnique({
         where: {

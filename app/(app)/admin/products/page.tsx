@@ -85,7 +85,6 @@ export default async function AdminProductsPage() {
                                     <TableCell>{product._count.accessRights}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-end gap-1">
-                                            {/* Publier / Dépublier */}
                                             <form
                                                 action={async () => {
                                                     "use server";
@@ -106,7 +105,6 @@ export default async function AdminProductsPage() {
                                                 </Button>
                                             </form>
 
-                                            {/* Supprimer */}
                                             <form
                                                 action={async () => {
                                                     "use server";

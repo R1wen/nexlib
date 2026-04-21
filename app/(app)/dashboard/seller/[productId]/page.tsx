@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { notFound, redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { ProductForm } from "../_components/ProductForm";
+import { ProductForm } from "@/app/dashboard/seller/_components/ProductForm";
 
 interface PageProps {
     params: Promise<{ productId: string }>;
@@ -17,16 +17,13 @@ export default async function EditProductPage({ params }: PageProps) {
     const { productId } = await params;
 
     const product = await prisma.product.findUnique({
-        where: {
-            id: productId,
-        },
+        where: { id: productId },
     });
 
     if (!product) {
         notFound();
     }
 
-    // Sécurité : Vérifier que le produit appartient bien au vendeur
     if (product.sellerId !== userId) {
         redirect("/dashboard/seller");
     }

@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "NexLib - Ebooks et Formations de Qualité",
   description: "Accédez à une bibliothèque d'ebooks et de formations de qualité pour développer vos compétences. Téléchargements sécurisés et accès instantané.",
-}; 
+};
 
 
 export default function HomePage() {
@@ -19,7 +19,7 @@ export default function HomePage() {
               <span className="text-primary">ressources numériques</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
-              Accédez à une bibliothèque d'ebooks et de formations de qualité pour booster votre carrière
+              Accédez à une bibliothèque d&apos;ebooks et de formations de qualité pour booster votre carrière
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Button size="lg" asChild>

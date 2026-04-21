@@ -44,7 +44,7 @@ export default async function DashboardPage() {
       {userAccess.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-20 text-center">
           <h3 className="text-lg font-medium text-zinc-900 dark:text-zinc-100">
-            Vous n'avez pas encore d'achats
+            Vous n&apos;avez pas encore d&apos;achats
           </h3>
           <p className="mb-4 text-sm text-muted-foreground">
             Explorez notre catalogue pour commencer votre apprentissage.

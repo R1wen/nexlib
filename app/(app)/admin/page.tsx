@@ -1,4 +1,3 @@
-import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 import { formatPrice, formatDate } from "@/lib/format";
 import {
@@ -107,7 +106,6 @@ export default async function AdminDashboardPage() {
                 ))}
             </div>
 
-            {/* Alertes */}
             {pendingOrdersCount > 0 && (
                 <div className="rounded-lg border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-800 flex items-center gap-2">
                     <ShoppingCart className="h-4 w-4 shrink-0" />
@@ -117,7 +115,6 @@ export default async function AdminDashboardPage() {
                 </div>
             )}
 
-            {/* Dernières commandes */}
             <div>
                 <h2 className="text-xl font-semibold mb-4">Dernières commandes</h2>
                 <div className="rounded-md border">

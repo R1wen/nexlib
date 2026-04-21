@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { CardProduct } from "@/components/products/CardProduct";
 import prisma from "@/lib/prisma";
 
-
 export const metadata: Metadata = {
   title: "Nos Produits",
   description: "Découvrez notre sélection d'ebooks et de formations",
@@ -19,7 +18,7 @@ export default async function ProductsPage() {
       <div className="text-center space-y-4 mb-12">
         <h1 className="text-4xl md:text-5xl font-bold">Nos Produits</h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Découvrez notre sélection d'ebooks et de formations pour développer
+          Découvrez notre sélection d&apos;ebooks et de formations pour développer
           vos compétences
         </p>
       </div>

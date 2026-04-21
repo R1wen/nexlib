@@ -25,12 +25,18 @@ const mainItems = [
   { title: "Contact", href: "/contact", icon: Phone, exact: true },
 ]
 
+const adminSubItems = [
+  { title: "Dashboard", href: "/admin" },
+  { title: "Gestion des produits", href: "/admin/products" },
+]
+
 export function NavItems({ isAdmin = false }: { isAdmin?: boolean }) {
   const pathname = usePathname()
-  const isDashboardActive =
-    pathname === "/dashboard" || pathname.startsWith("/dashboard/")
+  const isDashboardActive = pathname === "/dashboard" || pathname.startsWith("/dashboard/")
+  const isAdminActive = pathname === "/admin" || pathname.startsWith("/admin/")
 
   const [dashboardOpen, setDashboardOpen] = useState(isDashboardActive)
+  const [adminOpen, setAdminOpen] = useState(isAdminActive)
 
   return (
     <>
@@ -104,25 +110,53 @@ export function NavItems({ isAdmin = false }: { isAdmin?: boolean }) {
         )
       })}
 
-      {isAdmin && (() => {
-        const isAdminActive = pathname === "/admin" || pathname.startsWith("/admin/")
-        return (
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild isActive={isAdminActive} size="lg">
-              <Link
-                href="/admin"
-                className={cn(
-                  "flex items-center gap-3 text-gray-600 hover:text-gray-900 transition-colors",
-                  isAdminActive && "text-gray-900 border-r-2 border-orange-500 font-medium"
-                )}
-              >
-                <ShieldCheck className="size-4 shrink-0" />
-                <span>Administration</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        )
-      })()}
+      {isAdmin && (
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            size="lg"
+            isActive={isAdminActive}
+            onClick={() => setAdminOpen((prev) => !prev)}
+            className={cn(
+              "flex items-center gap-3 text-gray-600 hover:text-gray-900 transition-colors w-full cursor-pointer",
+              isAdminActive && "text-gray-900 font-medium"
+            )}
+          >
+            <ShieldCheck className="size-4 shrink-0" />
+            <span className="flex-1">Administration</span>
+            <ChevronRight
+              className={cn(
+                "size-3.5 shrink-0 text-gray-400 transition-transform duration-200",
+                adminOpen && "rotate-90"
+              )}
+            />
+          </SidebarMenuButton>
+
+          {adminOpen && (
+            <SidebarMenuSub>
+              {adminSubItems.map((item) => {
+                const isActive = item.href === "/admin"
+                  ? pathname === "/admin"
+                  : pathname === item.href || pathname.startsWith(item.href + "/")
+                return (
+                  <SidebarMenuSubItem key={item.href}>
+                    <SidebarMenuSubButton asChild isActive={isActive}>
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          "flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors",
+                          isActive && "text-gray-900 font-medium"
+                        )}
+                      >
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                )
+              })}
+            </SidebarMenuSub>
+          )}
+        </SidebarMenuItem>
+      )}
     </>
   )
 }

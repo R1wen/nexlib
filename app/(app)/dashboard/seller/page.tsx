@@ -94,7 +94,6 @@ export default async function SellerDashboardPage() {
                                     <TableCell>{product._count.accessRights}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center justify-end gap-1">
-                                            {/* Modifier */}
                                             <Button asChild variant="ghost" size="sm" className="h-8 px-2">
                                                 <Link href={`/dashboard/seller/${product.id}`}>
                                                     <Pencil className="h-4 w-4 mr-1" />
@@ -102,7 +101,6 @@ export default async function SellerDashboardPage() {
                                                 </Link>
                                             </Button>
 
-                                            {/* Publier / Dépublier */}
                                             <form
                                                 action={async () => {
                                                     "use server";
@@ -123,7 +121,6 @@ export default async function SellerDashboardPage() {
                                                 </Button>
                                             </form>
 
-                                            {/* Supprimer */}
                                             <form
                                                 action={async () => {
                                                     "use server";

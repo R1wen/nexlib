@@ -12,7 +12,7 @@ export default function AboutPage() {
         <div className="text-center space-y-4">
           <h1 className="text-4xl md:text-5xl font-bold">À Propos de NexLib</h1>
           <p className="text-xl text-muted-foreground">
-            Votre partenaire pour l'apprentissage numérique
+            Votre partenaire pour l&apos;apprentissage numérique
           </p>
         </div>
 
@@ -20,7 +20,7 @@ export default function AboutPage() {
           <h2>Notre Mission</h2>
           <p>
             NexLib est une plateforme moderne dédiée à la distribution sécurisée de contenus
-            numériques éducatifs. Nous croyons que l'accès à la connaissance doit être simple,
+            numériques éducatifs. Nous croyons que l&apos;accès à la connaissance doit être simple,
             sécurisé et accessible à tous.
           </p>
 
@@ -38,7 +38,7 @@ export default function AboutPage() {
 
           <h2>Notre Catalogue</h2>
           <p>
-            Nous proposons une sélection soigneusement choisie d'ebooks et de formations
+            Nous proposons une sélection soigneusement choisie d&apos;ebooks et de formations
             dans divers domaines : développement web, design, marketing digital, et bien plus encore.
           </p>
         </section>

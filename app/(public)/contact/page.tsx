@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ContactForm } from "./_components/ContactForm";
+import { ContactForm } from "@/app/contact/_components/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact - NexLib",
@@ -13,7 +13,7 @@ export default function ContactPage() {
         <div className="text-center space-y-4">
           <h1 className="text-4xl md:text-5xl font-bold">Contactez-nous</h1>
           <p className="text-lg text-muted-foreground">
-            Une question ? N'hésitez pas à nous écrire
+            Une question ? N&apos;hésitez pas à nous écrire
           </p>
         </div>
 
