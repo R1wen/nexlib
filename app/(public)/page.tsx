@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { ShieldCheck, Zap, BookOpen } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "NexLib - Ebooks et Formations de Qualité",
@@ -42,21 +43,27 @@ export default function HomePage() {
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           <div className="text-center space-y-3 p-6 rounded-lg border bg-card">
-            <div className="text-4xl">🔒</div>
+            <div className="flex justify-center">
+              <ShieldCheck className="size-10 text-primary" />
+            </div>
             <h3 className="text-xl font-semibold">Sécurisé</h3>
             <p className="text-sm text-muted-foreground">
               Téléchargements protégés avec liens signés et temporaires
             </p>
           </div>
           <div className="text-center space-y-3 p-6 rounded-lg border bg-card">
-            <div className="text-4xl">⚡</div>
+            <div className="flex justify-center">
+              <Zap className="size-10 text-primary" />
+            </div>
             <h3 className="text-xl font-semibold">Accès instantané</h3>
             <p className="text-sm text-muted-foreground">
               Accédez à vos contenus immédiatement après paiement
             </p>
           </div>
           <div className="text-center space-y-3 p-6 rounded-lg border bg-card">
-            <div className="text-4xl">📚</div>
+            <div className="flex justify-center">
+              <BookOpen className="size-10 text-primary" />
+            </div>
             <h3 className="text-xl font-semibold">Contenu de qualité</h3>
             <p className="text-sm text-muted-foreground">
               Ebooks et formations créés par des experts
