@@ -75,7 +75,6 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Créer le droit d'accès (idempotent via upsert)
     await prisma.accessRight.upsert({
       where: { clerkUserId_productId: { clerkUserId, productId } },
       create: {
@@ -95,7 +94,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Envoyer l'email de confirmation
+    // mail
     try {
       const client = await clerkClient();
       const user = await client.users.getUser(clerkUserId);
@@ -109,7 +108,6 @@ export async function POST(request: NextRequest) {
         });
       }
     } catch (emailError) {
-      // L'email est best-effort, on ne bloque pas le webhook
       console.error("Erreur envoi email confirmation:", emailError);
     }
   }

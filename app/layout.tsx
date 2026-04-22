@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="fr">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <body suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           {children}
           <Toaster richColors position="top-right" />
         </body>
