@@ -13,9 +13,15 @@ import {
 import { NavItems } from "@/components/layout/NavItems"
 
 export async function AppSidebar() {
-  const [user, { sessionClaims }] = await Promise.all([currentUser(), auth()])
+  const { sessionClaims } = await auth()
   const metadata = (sessionClaims?.metadata ?? sessionClaims?.publicMetadata) as { role?: string } | undefined
   const isAdmin = metadata?.role === "admin"
+  let user = null
+  try {
+    user = await currentUser()
+  } catch {
+    // Clerk API unavailable — sidebar still renders without user info
+  }
 
   return (
     <Sidebar className="border-r border-gray-200 bg-white">

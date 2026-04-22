@@ -48,7 +48,6 @@ export async function adminDeleteProduct(id: string) {
         const coverKey = new URL(product.coverImage).pathname.slice(1);
         await r2.send(new DeleteObjectCommand({ Bucket: R2_BUCKET_NAME, Key: coverKey }));
     } catch {
-        // best-effort
     }
 
     try {

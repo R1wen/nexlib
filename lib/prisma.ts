@@ -4,11 +4,7 @@ import { PrismaClient } from '@/app/generated/prisma/client'
 
 const connectionString = process.env.DIRECT_URL
 
-// 1. On configure le Pool Postgres (nécessaire pour l'adapter)
 const pool = new Pool({ connectionString })
-
-// 2. On configure l'adapter Prisma
-// C'est lui qui va traduire les requêtes Prisma en SQL optimisé pour le serverless
 const adapter = new PrismaPg(pool)
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
